@@ -87,7 +87,10 @@ class CompareOp : public framework::OperatorWithKernel {
     auto dim_x = context->GetInputDim("X");
     auto dim_y = context->GetInputDim("Y");
     PADDLE_ENFORCE_GE(dim_x.size(), dim_y.size(),
-                      "The size of dim_y should not be greater than dim_x's.");
+                      platform::errors::InvalidArgument(
+                          "The size of dim_y should not be greater than "
+                          "dim_x's, but received dim_y: %d > dim_x: %d.\n",
+                          dim_y.size(), dim_x.size()));
 
     context->SetOutputDim("Out", context->GetInputDim("X"));
     context->ShareLoD("X", "Out");
